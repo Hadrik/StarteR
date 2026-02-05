@@ -1,0 +1,34 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:StarteR.ViewModels.Steps"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="StarteR.Views.Steps.ProcessStepView"
+             x:DataType="vm:ProcessStepViewModel">
+    <Grid ColumnDefinitions="Auto, *"
+          RowDefinitions="Auto, Auto, Auto"
+          ColumnSpacing="8"
+          RowSpacing="4">
+        <TextBlock Grid.Row="0" Grid.Column="0"
+                   HorizontalAlignment="Right"
+                   VerticalAlignment="Center"
+                   Text="File path"/>
+        <TextBox Grid.Row="0" Grid.Column="1"
+                 Text="{Binding Model.FilePath}"/>
+        
+        <TextBlock Grid.Row="1" Grid.Column="0"
+                   HorizontalAlignment="Right"
+                   VerticalAlignment="Center"
+                   Text="Arguments"/>
+        <TextBox Grid.Row="1" Grid.Column="1"
+                 Text="{Binding Model.Arguments}"/>
+        
+        <TextBlock Grid.Row="2" Grid.Column="0"
+                   HorizontalAlignment="Right"
+                   VerticalAlignment="Center"
+                   Text="Working Directory"/>
+        <TextBox Grid.Row="2" Grid.Column="1"
+                 Text="{Binding Model.WorkingDirectory}"/>
+    </Grid>
+</UserControl>

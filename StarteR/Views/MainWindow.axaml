@@ -1,0 +1,55 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:StarteR.ViewModels"
+        xmlns:dvm="using:StarteR.DesignViewModels"
+        xmlns:ui="using:FluentAvalonia.UI.Controls"
+        xmlns:m="using:StarteR.Models"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="StarteR.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="StarteR">
+    <Design.DataContext>
+        <dvm:MainWindow/>
+    </Design.DataContext>
+    
+    <DockPanel>
+        <ui:NavigationView PaneDisplayMode="Left"
+                           MenuItemsSource="{Binding Flows}"
+                           Content="{Binding CurrentEditor}"
+                           SelectedItem="{Binding CurrentFlow}"
+                           IsSettingsVisible="False"
+                           IsPaneToggleButtonVisible="True"> <!-- TODO: Settings page -->
+            <ui:NavigationView.MenuItemTemplate>
+            <DataTemplate DataType="{x:Type m:FlowModel}">
+                <ui:NavigationViewItem Content="{Binding Name}"/> <!-- TODO: Icons -->
+            </DataTemplate>
+            </ui:NavigationView.MenuItemTemplate>
+        </ui:NavigationView>
+        
+        <!-- <ScrollViewer DockPanel.Dock="Left" -->
+        <!--               Width="200"> -->
+        <!--     <StackPanel> -->
+        <!--         <ItemsControl ItemsSource="{Binding Flows}"> -->
+        <!--             <ItemsControl.ItemTemplate> -->
+        <!--             <DataTemplate> -->
+        <!--                 <Button Command="{Binding $parent[ItemsControl].((vm:MainWindowViewModel)DataContext).SelectFlowCommand}" -->
+        <!--                         CommandParameter="{Binding}" -->
+        <!--                         Content="{Binding Name}" -->
+        <!--                         /> -->
+        <!--             </DataTemplate> -->
+        <!--             </ItemsControl.ItemTemplate> -->
+        <!--         </ItemsControl> -->
+        <!--     </StackPanel> -->
+        <!-- </ScrollViewer> -->
+
+        <!-- <TransitioningContentControl Content="{Binding CurrentEditor}" -->
+        <!--                              Margin="10"> -->
+        <!--     <TransitioningContentControl.PageTransition> -->
+        <!--         <CrossFade Duration="0.15" /> -->
+        <!--     </TransitioningContentControl.PageTransition> -->
+        <!-- </TransitioningContentControl> -->
+    </DockPanel>
+</Window>
