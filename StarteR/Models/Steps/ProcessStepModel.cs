@@ -13,7 +13,7 @@ public class ProcessStepModel : StepModelBase
     public string Arguments { get; set; } = string.Empty;
     public string WorkingDirectory { get; set; } = string.Empty;
     
-    public override async Task ExecuteAsync()
+    protected override async Task ExecuteAsync()
     {
         var startInfo = new ProcessStartInfo
         {

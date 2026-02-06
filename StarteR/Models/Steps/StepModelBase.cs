@@ -11,11 +11,21 @@ public abstract partial class StepModelBase : ObservableObject
 {
     public abstract StepType Type { get; }
     public abstract string DisplayName { get; }
-    public bool IsEnabled { get; set; } = true;
-    public bool WaitForCompletion { get; set; } = true;
+    
+    [ObservableProperty]
+    private bool _isEnabled = true;
+    
+    [ObservableProperty]
+    private bool _waitForCompletion = true;
     
     [ObservableProperty]
     private bool _isRunning;
 
-    public abstract Task ExecuteAsync();
+    protected abstract Task ExecuteAsync();
+
+    public Task Run()
+    {
+        IsRunning = true;
+        return ExecuteAsync().ContinueWith(_ => IsRunning = false);
+    }
 }

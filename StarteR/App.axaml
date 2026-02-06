@@ -3,7 +3,7 @@
              xmlns:fluent="using:FluentAvalonia.Styling"
              x:Class="StarteR.App"
              xmlns:local="using:StarteR"
-             RequestedThemeVariant="Default">
+             RequestedThemeVariant="Dark">
 
     <Application.DataTemplates>
         <local:ViewLocator/>
@@ -11,7 +11,6 @@
     </Application.DataTemplates>
   
     <Application.Styles>
-        <!-- <FluentTheme/> -->
         <fluent:FluentAvaloniaTheme/>
     </Application.Styles>
 </Application>

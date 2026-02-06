@@ -14,7 +14,7 @@ public class WebRequestStepModel : StepModelBase
     public string Headers { get; set; } = string.Empty;
     public string Body { get; set; } = string.Empty;
     
-    public override async Task ExecuteAsync()
+    protected override async Task ExecuteAsync()
     {
         using var client = new HttpClient();
         var request = new HttpRequestMessage(new HttpMethod(Method), Url);
