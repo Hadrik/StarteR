@@ -12,21 +12,20 @@ public class FlowRunnerService
         {
             if (!step.IsEnabled) continue;
 
-            step.IsRunning = true;
             try
             {
                 if (step.WaitForCompletion)
                 {
-                    step.ExecuteAsync().Start();
+                    await step.Run();
                 }
                 else
                 {
-                    await step.ExecuteAsync();
+                    _ = step.Run();
                 }
             }
-            finally
+            catch (Exception)
             {
-                step.IsRunning = false;
+                // ignored
             }
         }
     }

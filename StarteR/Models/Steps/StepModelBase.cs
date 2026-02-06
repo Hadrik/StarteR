@@ -23,9 +23,16 @@ public abstract partial class StepModelBase : ObservableObject
 
     protected abstract Task ExecuteAsync();
 
-    public Task Run()
+    public async Task Run()
     {
         IsRunning = true;
-        return ExecuteAsync().ContinueWith(_ => IsRunning = false);
+        try
+        {
+            await ExecuteAsync();
+        }
+        finally
+        {
+            IsRunning = false;
+        }
     }
 }

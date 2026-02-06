@@ -20,7 +20,7 @@ public class ProcessStepModel : StepModelBase
             FileName = FilePath,
             Arguments = Arguments,
             WorkingDirectory = WorkingDirectory,
-            UseShellExecute = true
+            UseShellExecute = false
         };
 
         using var process = Process.Start(startInfo);
