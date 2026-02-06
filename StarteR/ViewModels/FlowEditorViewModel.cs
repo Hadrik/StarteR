@@ -13,6 +13,7 @@ namespace StarteR.ViewModels;
 public partial class FlowEditorViewModel : ViewModelBase
 {
     private readonly FlowRunnerService _flowRunner;
+    private readonly Action<FlowModel> _removeFlowAction;
 
     [ObservableProperty]
     private FlowModel _model;
@@ -22,10 +23,11 @@ public partial class FlowEditorViewModel : ViewModelBase
     
     public static IReadOnlyList<StepType> AvailableStepTypes { get; } = Enum.GetValues<StepType>();
 
-    public FlowEditorViewModel(FlowModel flow, FlowRunnerService flowRunner)
+    public FlowEditorViewModel(FlowModel flow, FlowRunnerService flowRunner, Action<FlowModel> removeFlowAction)
     {
         Model = flow;
         _flowRunner = flowRunner;
+        _removeFlowAction = removeFlowAction;
     }
 
     [RelayCommand]
@@ -45,6 +47,12 @@ public partial class FlowEditorViewModel : ViewModelBase
     private async Task RunFlow()
     {
         await _flowRunner.RunAsync(Model);
+    }
+
+    [RelayCommand]
+    private void RemoveThisFlow()
+    {
+        _removeFlowAction(Model);
     }
 
     private static StepModelBase CreateStep(StepType type) => type switch

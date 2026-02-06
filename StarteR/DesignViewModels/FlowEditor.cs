@@ -18,5 +18,5 @@ public class FlowEditor : FlowEditorViewModel
                 new WebRequestStepModel()
             ]
         },
-        null!) { }
+        null!, model => { }) { }
 }

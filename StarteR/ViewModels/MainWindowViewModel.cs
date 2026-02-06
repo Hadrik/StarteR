@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using StarteR.Models;
@@ -27,11 +28,8 @@ public partial class MainWindowViewModel : ViewModelBase
 
     partial void OnCurrentFlowChanged(FlowModel? value)
     {
-        CurrentEditor = value != null ? new FlowEditorViewModel(value, _flowRunner) : null;
+        CurrentEditor = value != null ? new FlowEditorViewModel(value, _flowRunner, RemoveFlow) : null;
     }
-    
-    [RelayCommand]
-    private void SelectFlow(FlowModel flow) => CurrentFlow = flow;
 
     [RelayCommand]
     private void AddFlow()
@@ -41,6 +39,12 @@ public partial class MainWindowViewModel : ViewModelBase
             Name = "New Flow",
         };
         Flows.Add(flow);
-        CurrentFlow = flow;
+        CurrentFlow = Flows.Last();
+    }
+    
+    private void RemoveFlow(FlowModel flow)
+    {
+        Flows.Remove(flow);
+        CurrentFlow = Flows.FirstOrDefault();
     }
 }

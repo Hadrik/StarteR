@@ -23,7 +23,23 @@
                            Content="{Binding CurrentEditor}"
                            SelectedItem="{Binding CurrentFlow}"
                            IsSettingsVisible="False"
-                           IsPaneToggleButtonVisible="True"> <!-- TODO: Settings page -->
+                           IsPaneToggleButtonVisible="False"
+                           OpenPaneLength="200">
+            <ui:NavigationView.PaneHeader>
+                <Button Command="{Binding AddFlowCommand}"
+                        Margin="6 3"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        Height="36"
+                        VerticalAlignment="Top"
+                        HorizontalAlignment="Left"
+                        ToolTip.Tip="Add new flow">
+                    <Button.Content>
+                        <ui:SymbolIcon Symbol="Add"/>
+                    </Button.Content>
+                </Button>
+            </ui:NavigationView.PaneHeader>
+            
             <ui:NavigationView.MenuItemTemplate>
             <DataTemplate DataType="{x:Type m:FlowModel}">
                 <ui:NavigationViewItem Content="{Binding Name}"/> <!-- TODO: Icons -->
