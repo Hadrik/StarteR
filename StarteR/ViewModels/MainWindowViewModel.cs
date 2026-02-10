@@ -10,9 +10,10 @@ namespace StarteR.ViewModels;
 public partial class MainWindowViewModel : ViewModelBase
 {
     private readonly FlowRunnerService _flowRunner;
-    
+    private readonly SaveService _saveService;
+
     [ObservableProperty]
-    private ObservableCollection<FlowModel> _flows;
+    private AppModel _appModel;
     
     [ObservableProperty]
     private FlowModel? _currentFlow;
@@ -20,10 +21,11 @@ public partial class MainWindowViewModel : ViewModelBase
     [ObservableProperty]
     private FlowEditorViewModel? _currentEditor;
 
-    public MainWindowViewModel(AppModel appModel, FlowRunnerService flowRunner)
+    public MainWindowViewModel(AppModel appModel, FlowRunnerService flowRunner, SaveService saveService)
     {
         _flowRunner = flowRunner;
-        Flows = new ObservableCollection<FlowModel>(appModel.Flows);
+        _saveService = saveService;
+        AppModel = appModel;
     }
 
     partial void OnCurrentFlowChanged(FlowModel? value)
@@ -38,13 +40,19 @@ public partial class MainWindowViewModel : ViewModelBase
         {
             Name = "New Flow",
         };
-        Flows.Add(flow);
-        CurrentFlow = Flows.Last();
+        AppModel.Flows.Add(flow);
+        CurrentFlow = AppModel.Flows.Last();
+    }
+
+    [RelayCommand]
+    private void Save()
+    {
+        _saveService.Save();
     }
     
     private void RemoveFlow(FlowModel flow)
     {
-        Flows.Remove(flow);
-        CurrentFlow = Flows.FirstOrDefault();
+        AppModel.Flows.Remove(flow);
+        CurrentFlow = AppModel.Flows.FirstOrDefault();
     }
 }

@@ -19,6 +19,7 @@ public abstract partial class StepModelBase : ObservableObject
     private bool _waitForCompletion = true;
     
     [ObservableProperty]
+    [property: JsonIgnore]
     private bool _isRunning;
 
     protected abstract Task ExecuteAsync();

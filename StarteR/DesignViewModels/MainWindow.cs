@@ -25,5 +25,5 @@ public class MainWindow : MainWindowViewModel
                 }
             ]
         },
-        null!) {}
+        null!, null!) {}
 }

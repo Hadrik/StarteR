@@ -12,32 +12,47 @@
         Icon="/Assets/avalonia-logo.ico"
         Title="StarteR"
         Background="Transparent"
-        TransparencyLevelHint="Mica">
+        TransparencyLevelHint="Mica"
+        Width="800" Height="450">
     <Design.DataContext>
         <dvm:MainWindow/>
     </Design.DataContext>
     
     <DockPanel>
         <ui:NavigationView PaneDisplayMode="Left"
-                           MenuItemsSource="{Binding Flows}"
+                           MenuItemsSource="{Binding AppModel.Flows}"
                            Content="{Binding CurrentEditor}"
                            SelectedItem="{Binding CurrentFlow}"
                            IsSettingsVisible="False"
                            IsPaneToggleButtonVisible="False"
                            OpenPaneLength="200">
             <ui:NavigationView.PaneHeader>
-                <Button Command="{Binding AddFlowCommand}"
-                        Margin="6 3"
-                        Background="Transparent"
-                        BorderThickness="0"
-                        Height="36"
-                        VerticalAlignment="Top"
-                        HorizontalAlignment="Left"
-                        ToolTip.Tip="Add new flow">
-                    <Button.Content>
-                        <ui:SymbolIcon Symbol="Add"/>
-                    </Button.Content>
-                </Button>
+                <Grid>
+                    <Button Command="{Binding AddFlowCommand}"
+                            Margin="6 3"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            Height="36"
+                            VerticalAlignment="Top"
+                            HorizontalAlignment="Left"
+                            ToolTip.Tip="Add new flow">
+                        <Button.Content>
+                            <ui:SymbolIcon Symbol="Add"/>
+                        </Button.Content>
+                    </Button>
+                    <Button Command="{Binding SaveCommand}"
+                            Margin="6 3"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            Height="36"
+                            VerticalAlignment="Top"
+                            HorizontalAlignment="Right"
+                            ToolTip.Tip="Save">
+                        <Button.Content>
+                            <ui:SymbolIcon Symbol="SaveFilled"/>
+                        </Button.Content>
+                    </Button>
+                </Grid>
             </ui:NavigationView.PaneHeader>
             
             <ui:NavigationView.MenuItemTemplate>

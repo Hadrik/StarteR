@@ -25,6 +25,7 @@ public partial class App : Application
         var services = new ServiceCollection();
         ConfigureServices(services);
         var serviceProvider = services.BuildServiceProvider();
+        _ = serviceProvider.GetRequiredService<SaveService>();
         
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
@@ -54,6 +55,7 @@ public partial class App : Application
     private void ConfigureServices(IServiceCollection services)
     {
         services.AddSingleton(LoadModel());
+        services.AddSingleton<SaveService>();
         services.AddSingleton<FlowRunnerService>();
         services.AddSingleton<MainWindowViewModel>();
     }

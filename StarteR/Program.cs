@@ -18,7 +18,11 @@ sealed class Program
         {
             List<Task> tasks = [];
             var config = ConfigManager.Load();
-            if (config == null) return;
+            if (config == null)
+            {
+                Console.WriteLine("No config file found");
+                return;
+            }
             var flowRunner = new Services.FlowRunnerService();
             tasks.AddRange(
                 from flow

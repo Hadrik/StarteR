@@ -1,17 +1,23 @@
 ﻿using System.Diagnostics;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace StarteR.Models.Steps;
 
-public class ProcessStepModel : StepModelBase
+public partial class ProcessStepModel : StepModelBase
 {
     [JsonIgnore] public override StepType Type => StepType.Process;
     [JsonIgnore] public override string DisplayName => "Process";
     
-    public string FilePath { get; set; } = string.Empty;
-    public string Arguments { get; set; } = string.Empty;
-    public string WorkingDirectory { get; set; } = string.Empty;
+    [ObservableProperty]
+    private string _filePath = string.Empty;
+    
+    [ObservableProperty]
+    private string _arguments = string.Empty;
+    
+    [ObservableProperty]
+    private string _workingDirectory = string.Empty;
     
     protected override async Task ExecuteAsync()
     {

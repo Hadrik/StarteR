@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections.ObjectModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace StarteR.Models;
 
-public class AppModel
+public partial class AppModel : ObservableObject
 {
-    public List<FlowModel> Flows { get; set; } = [];
+    [ObservableProperty]
+    private ObservableCollection<FlowModel> _flows = [];
 }

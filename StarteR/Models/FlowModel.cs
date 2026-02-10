@@ -1,11 +1,17 @@
 ﻿using System.Collections.ObjectModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using StarteR.Models.Steps;
 
 namespace StarteR.Models;
 
-public class FlowModel
+public partial class FlowModel : ObservableObject
 {
-    public string Name { get; set; } = string.Empty;
-    public bool IsEnabled { get; set; } = true;
-    public ObservableCollection<StepModelBase> Steps { get; set; } = [];
+    [ObservableProperty]
+    private string _name = string.Empty;
+    
+    [ObservableProperty]
+    private bool _isEnabled = true;
+    
+    [ObservableProperty]
+    private ObservableCollection<StepModelBase> _steps = [];
 }
