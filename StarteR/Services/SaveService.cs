@@ -15,4 +15,9 @@ public class SaveService
     {
         ConfigManager.Save(_currentModel);
     }
+
+    public bool HasUnsavedChanges()
+    {
+        return ConfigManager.Serialize(_currentModel) != ConfigManager.Read();
+    }
 }

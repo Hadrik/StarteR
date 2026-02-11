@@ -1,7 +1,10 @@
-﻿using System.Collections.ObjectModel;
-using System.Linq;
+﻿using System.Linq;
+using System.Threading.Tasks;
+using Avalonia;
+using Avalonia.Controls;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using FluentAvalonia.UI.Controls;
 using StarteR.Models;
 using StarteR.Services;
 
@@ -54,5 +57,38 @@ public partial class MainWindowViewModel : ViewModelBase
     {
         AppModel.Flows.Remove(flow);
         CurrentFlow = AppModel.Flows.FirstOrDefault();
+    }
+
+    public async Task HandleWindowClosingAsync(WindowClosingEventArgs e)
+    {
+        if (!_saveService.HasUnsavedChanges()) return;
+        e.Cancel = true;
+
+        var dialog = new ContentDialog
+        {
+            Title = "Unsaved Changes",
+            Content = "You have unsaved changes. Do you want to save before exiting?",
+            PrimaryButtonText = "Save",
+            SecondaryButtonText = "Don't Save",
+            CloseButtonText = "Cancel",
+            DefaultButton = ContentDialogButton.Primary
+        };
+
+        var result = await dialog.ShowAsync();
+        switch (result)
+        {
+            case ContentDialogResult.Primary:
+                // Save and exit
+                _saveService.Save();
+                (Application.Current as App)?.Shutdown();
+                break;
+            case ContentDialogResult.Secondary:
+                // Exit without saving
+                (Application.Current as App)?.Shutdown();
+                break;
+            case ContentDialogResult.None:
+                // Cancel - do nothing, window stays open
+                break;
+        }
     }
 }

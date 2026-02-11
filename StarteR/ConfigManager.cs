@@ -6,12 +6,21 @@ namespace StarteR;
 
 public class ConfigManager
 {
-    public static AppModel? Load(string path = "./config.json")
+    public static string Serialize(AppModel appModel)
+    {
+        return JsonSerializer.Serialize(appModel);
+    }
+
+    public static AppModel? Deserialize(string json)
+    {
+        return JsonSerializer.Deserialize<AppModel>(json);
+    }
+    
+    public static string? Read(string path = "./config.json")
     {
         try
         {
-            using var stream = File.OpenRead(path);
-            return JsonSerializer.Deserialize<AppModel>(stream)!;
+            return File.ReadAllText(path);
         }
         catch (FileNotFoundException)
         {
@@ -19,10 +28,16 @@ public class ConfigManager
         }
     }
     
+    public static AppModel? Load(string path = "./config.json")
+    {
+        var json = Read(path);
+        return json != null ? Deserialize(json) : null;
+    }
+    
     public static void Save(AppModel appModel, string path = "./config.json")
     {
         using var stream = File.Create(path);
         using var writer = new StreamWriter(stream);
-        writer.Write(JsonSerializer.Serialize(appModel));
+        writer.Write(Serialize(appModel));
     }
 }
