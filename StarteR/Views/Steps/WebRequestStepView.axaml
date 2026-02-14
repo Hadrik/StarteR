@@ -1,0 +1,110 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:StarteR.ViewModels.Steps"
+             xmlns:ui="using:FluentAvalonia.UI.Controls"
+             xmlns:dvm="using:StarteR.DesignViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="StarteR.Views.Steps.WebRequestStepView"
+             x:DataType="vm:WebRequestStepViewModel">
+    <Design.DataContext>
+        <dvm:WebRequestStep/>
+    </Design.DataContext>
+    
+    <StackPanel>
+        <Grid
+            ColumnDefinitions="Auto, *">
+            <TextBlock Grid.Column="0"
+                       HorizontalAlignment="Right"
+                       VerticalAlignment="Center"
+                       Text="URL"/>
+            <Border Grid.Column="1"
+                    BorderBrush="Transparent"
+                    BorderThickness="0"
+                    CornerRadius="4"
+                    ClipToBounds="True"
+                    Height="35">
+                <Grid ColumnDefinitions="100, *"
+                      ClipToBounds="True"
+                      Height="35"
+                      ColumnSpacing="1">
+                    <ui:FAComboBox Grid.Column="0"
+                                   ItemsSource="{Binding HttpMethods}"
+                                   SelectedItem="{Binding Model.Method}"
+                                   BorderThickness="0"
+                                   Height="35"
+                                   HorizontalAlignment="Stretch"
+                                   VerticalContentAlignment="Bottom"
+                                   CornerRadius="0"/>
+                    <TextBox Grid.Column="1"
+                             Text="{Binding Model.Url}"
+                             CornerRadius="0"
+                             ClipToBounds="True"
+                             VerticalContentAlignment="Center"/>
+                </Grid>
+            </Border>
+        </Grid>
+        <Grid ColumnDefinitions="*, *"
+              RowDefinitions="30, *, 30">
+            <TextBlock Grid.Row="0" Grid.Column="0"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Text="Headers"/>
+            
+            <StackPanel Grid.Row="1" Grid.Column="0">
+                <ItemsControl ItemsSource="{Binding Model.Headers}">
+                    <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Grid ColumnDefinitions="*, *, 50">
+                            <TextBlock Grid.Column="0"
+                                       Text="{Binding Key}"/>
+                            
+                            <TextBlock Grid.Column="1"
+                                       Text="{Binding Value}"/>
+                            
+                            <Button Grid.Column="2"
+                                    Command="{Binding $parent[ItemsControl].((vm:WebRequestStepViewModel)DataContext).RemoveHeaderCommand}"
+                                    CommandParameter="{Binding}">
+                                <Button.Content>
+                                    <ui:SymbolIcon Symbol="DeleteFilled"/>
+                                </Button.Content>
+                            </Button>
+                        </Grid>
+                    </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+            
+            <Grid Grid.Row="2" Grid.Column="0"
+                  ColumnDefinitions="*, *, 50">
+                <TextBox Grid.Column="0"
+                         Text="{Binding HeaderKey}"/>
+                
+                <TextBox Grid.Column="1"
+                         Text="{Binding HeaderValue}"/>
+                
+                <Button Grid.Column="2"
+                        Command="{Binding AddHeaderCommand}">
+                    <Button.Content>
+                        <ui:SymbolIcon Symbol="Add"/>
+                    </Button.Content>
+                </Button>
+            </Grid>
+            
+            <TextBlock Grid.Row="0" Grid.Column="1"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Text="Body"/>
+            
+            <TextBox Grid.Row="1" Grid.Column="1"
+                     Text="{Binding Model.Body}"/>
+            
+            <ui:FAComboBox Grid.Row="2" Grid.Column="1"
+                           ItemsSource="{Binding BodyTypes}"
+                           SelectedItem="{Binding Model.BodyType}"
+                           HorizontalAlignment="Center"
+                           ToolTip.Tip="Body type"/>
+        </Grid>
+    </StackPanel>
+</UserControl>
