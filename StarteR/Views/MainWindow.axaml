@@ -13,7 +13,8 @@
         Title="StarteR"
         Background="Transparent"
         TransparencyLevelHint="Mica"
-        Width="800" Height="450">
+        Width="800" Height="450"
+        MinWidth="800" MinHeight="450">
     <Design.DataContext>
         <dvm:MainWindow/>
     </Design.DataContext>
@@ -29,10 +30,7 @@
             <ui:NavigationView.PaneHeader>
                 <Grid>
                     <Button Command="{Binding AddFlowCommand}"
-                            Margin="6 3"
-                            Background="Transparent"
-                            BorderThickness="0"
-                            Height="36"
+                            Classes="Transparent"
                             VerticalAlignment="Top"
                             HorizontalAlignment="Left"
                             ToolTip.Tip="Add new flow">
@@ -41,10 +39,7 @@
                         </Button.Content>
                     </Button>
                     <Button Command="{Binding SaveCommand}"
-                            Margin="6 3"
-                            Background="Transparent"
-                            BorderThickness="0"
-                            Height="36"
+                            Classes="Transparent"
                             VerticalAlignment="Top"
                             HorizontalAlignment="Right"
                             ToolTip.Tip="Save">

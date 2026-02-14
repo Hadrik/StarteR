@@ -12,5 +12,6 @@
   
     <Application.Styles>
         <fluent:FluentAvaloniaTheme/>
+        <StyleInclude Source="Styles/AppStyles.axaml"/>
     </Application.Styles>
 </Application>
