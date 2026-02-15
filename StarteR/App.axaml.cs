@@ -3,6 +3,7 @@ using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core.Plugins;
 using System.Linq;
+using System.Net.Http;
 using Avalonia.Markup.Xaml;
 using Microsoft.Extensions.DependencyInjection;
 using StarteR.Models;
@@ -85,6 +86,21 @@ public class App : Application
                             Arguments = "",
                             WorkingDirectory = ".",
                             IsEnabled = true
+                        }
+                    ]
+                },
+                new FlowModel
+                {
+                    Name = "Sample Flow 2",
+                    Steps = [
+                        new WebRequestStepModel
+                        {
+                            Url = "https://jsonplaceholder.typicode.com/posts",
+                            Method = HttpMethod.Get,
+                            BodyType = WebRequestBodyType.Text,
+                            Body = "",
+                            IsEnabled = true,
+                            ErrorMessage = "Failed to make web request"
                         }
                     ]
                 }

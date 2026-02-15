@@ -28,12 +28,14 @@
                     <ui:SymbolIcon Symbol="DeleteFilled"/>
                 </Button.Content>
             </Button>
+            
             <TextBlock Grid.Column="1"
                        VerticalAlignment="Center"
                        HorizontalAlignment="Center"
                        Text="{Binding Model.Name}"
                        FontSize="20"
                        FontWeight="SemiBold"/>
+            
             <Button Grid.Column="2"
                     Command="{Binding RunFlowCommand}"
                     Classes="Transparent">
@@ -52,6 +54,7 @@
                         <Border CornerRadius="8"
                                 Padding="8"
                                 Margin="8 4">
+                            
                             <Border.Background>
                             <MultiBinding Converter="{StaticResource ToBackgroundColorConverter}">
                                 <Binding Path="IsEnabled"/>
@@ -66,22 +69,43 @@
                             </Border.Transitions>
                             
                             <StackPanel Spacing="4">
-                                <Grid ColumnDefinitions="*, Auto, Auto, Auto">
-                                    <TextBlock Grid.Column="0"
+                                <Grid ColumnDefinitions="Auto, *, Auto, Auto, Auto">
+                                    <Button Grid.Column="0"
+                                            Classes="Transparent"
+                                            Command="{Binding ClearErrorCommand}"
+                                            IsVisible="{Binding ErrorMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                                            ToolTip.Tip="{Binding ErrorMessage}">
+                                        <Button.Content>
+                                            <ui:InfoBadge Grid.Column="0"
+                                                          Classes="Critical Icon"/>
+                                        </Button.Content>
+                                        <Button.Styles>
+                                            <Style Selector=":is(Button):pointerover">
+                                                <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
+                                                    <Setter Property="Background" Value="Transparent"/>
+                                                </Style>
+                                            </Style>
+                                        </Button.Styles>
+                                    </Button>
+                                    
+                                    <TextBlock Grid.Column="1"
                                                Text="{Binding DisplayName}"
                                                VerticalAlignment="Center"
                                                Margin="15 0"
                                                FontSize="16"/>
-                                    <CheckBox Grid.Column="1"
+                                    
+                                    <CheckBox Grid.Column="2"
                                               IsChecked="{Binding IsEnabled}"
                                               Margin="20 0"
                                               Content="Enabled"
                                               ToolTip.Tip="Enable step"/>
-                                    <CheckBox Grid.Column="2"
+                                    
+                                    <CheckBox Grid.Column="3"
                                               IsChecked="{Binding WaitForCompletion}"
                                               Content="Wait"
                                               ToolTip.Tip="Wait for step to finish before continuing"/>
-                                    <Button Grid.Column="3"
+                                    
+                                    <Button Grid.Column="4"
                                             Command="{Binding $parent[ItemsControl].((vm:FlowEditorViewModel)DataContext).RemoveStepCommand}"
                                             CommandParameter="{Binding}"
                                             Classes="Transparent"
@@ -91,6 +115,7 @@
                                         </Button.Content>
                                     </Button>
                                 </Grid>
+                                
                                 <ContentControl Content="{Binding}"
                                                 Margin="8 0 8 8"/>
                             </StackPanel>
@@ -107,6 +132,7 @@
                         <MenuItem Header="Process"
                                   Command="{Binding AddStepCommand}"
                                   CommandParameter="{x:Static steps:StepType.Process}"/>
+                        
                         <MenuItem Header="Web request"
                                   Command="{Binding AddStepCommand}"
                                   CommandParameter="{x:Static steps:StepType.WebRequest}"/>

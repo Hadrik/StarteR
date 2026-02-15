@@ -1,6 +1,8 @@
-﻿using System.Text.Json.Serialization;
+﻿using System;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 
 namespace StarteR.Models.Steps;
 
@@ -19,9 +21,18 @@ public abstract partial class StepModelBase : ObservableObject
     private bool _waitForCompletion = true;
     
     [ObservableProperty]
+    private string? _errorMessage;
+    
+    [ObservableProperty]
     [property: JsonIgnore]
     private bool _isRunning;
 
+    [RelayCommand]
+    private void ClearError()
+    {
+        ErrorMessage = null;
+    }
+    
     protected abstract Task ExecuteAsync();
 
     public async Task Run()
@@ -30,6 +41,11 @@ public abstract partial class StepModelBase : ObservableObject
         try
         {
             await ExecuteAsync();
+            ClearError();
+        }
+        catch (Exception e)
+        {
+            ErrorMessage = e.Message;
         }
         finally
         {

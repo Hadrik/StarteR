@@ -40,16 +40,30 @@ public partial class WebRequestStepModel : StepModelBase
         };
         foreach (var keyValuePair in Headers)
         {
-            request.Headers.Add(keyValuePair.Key, keyValuePair.Value);
+            try
+            {
+                request.Headers.Add(keyValuePair.Key, keyValuePair.Value);
+            }
+            catch (Exception e)
+            {
+                throw new InvalidOperationException($"Invalid header: {keyValuePair.Key}: {keyValuePair.Value}", e);
+            }
         }
         if (!string.IsNullOrEmpty(Body))
         {
-            request.Content = BodyType switch
+            try
             {
-                WebRequestBodyType.Text => new StringContent(Body),
-                WebRequestBodyType.FormUrlEncoded => new FormUrlEncodedContent(JsonSerializer.Deserialize<Dictionary<string, string>>(Body) ?? new Dictionary<string, string>()),
-                _ => throw new ArgumentOutOfRangeException()
-            };
+                request.Content = BodyType switch
+                {
+                    WebRequestBodyType.Text => new StringContent(Body),
+                    WebRequestBodyType.FormUrlEncoded => new FormUrlEncodedContent(JsonSerializer.Deserialize<Dictionary<string, string>>(Body) ?? new Dictionary<string, string>()),
+                    _ => throw new ArgumentOutOfRangeException()
+                };
+            }
+            catch (JsonException e)
+            {
+                throw new InvalidOperationException("Invalid body format for FormUrlEncoded. Expected a JSON object with string key-value pairs.", e);
+            }
         }
         
         var task = Client.SendAsync(request);

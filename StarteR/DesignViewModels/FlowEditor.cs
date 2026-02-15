@@ -13,7 +13,7 @@ public class FlowEditor : FlowEditorViewModel
             Steps = [
                 new ProcessStepModel
                 {
-                    
+                    ErrorMessage = "Test error message",
                 },
                 new WebRequestStepModel()
             ]

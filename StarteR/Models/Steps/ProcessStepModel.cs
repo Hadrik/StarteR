@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -29,10 +30,17 @@ public partial class ProcessStepModel : StepModelBase
             UseShellExecute = false
         };
 
-        using var process = Process.Start(startInfo);
-        if (process != null && WaitForCompletion)
+        try
         {
-            await process.WaitForExitAsync();
+            using var process = Process.Start(startInfo);
+            if (process != null && WaitForCompletion)
+            {
+                await process.WaitForExitAsync();
+            }
+        }
+        catch (Exception e)
+        {
+            throw new InvalidOperationException($"Failed to start process: {FilePath} {Arguments}\n{e.Message}", e);
         }
     }
 }

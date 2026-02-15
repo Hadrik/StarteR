@@ -31,6 +31,7 @@ sealed class Program
                 select flowRunner.RunAsync(flow)
             );
             Task.WaitAll(tasks.ToArray());
+            ConfigManager.Save(config); // Save possible error messages
             return;
         }
         

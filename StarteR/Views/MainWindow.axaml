@@ -4,6 +4,7 @@
         xmlns:dvm="using:StarteR.DesignViewModels"
         xmlns:ui="using:FluentAvalonia.UI.Controls"
         xmlns:m="using:StarteR.Models"
+        xmlns:conv="using:StarteR.Converters"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
@@ -15,9 +16,14 @@
         TransparencyLevelHint="Mica"
         Width="800" Height="450"
         MinWidth="800" MinHeight="450">
+    
     <Design.DataContext>
         <dvm:MainWindow/>
     </Design.DataContext>
+    
+    <Window.Resources>
+        <conv:IsGreaterThanZeroConverter x:Key="IsGreaterThanZero"/>
+    </Window.Resources>
     
     <DockPanel>
         <ui:NavigationView PaneDisplayMode="Left"
@@ -52,7 +58,14 @@
             
             <ui:NavigationView.MenuItemTemplate>
             <DataTemplate DataType="{x:Type m:FlowModel}">
-                <ui:NavigationViewItem Content="{Binding Name}"/> <!-- TODO: Icons -->
+                <ui:NavigationViewItem Content="{Binding Name}">
+                    <ui:NavigationViewItem.InfoBadge>
+                        <ui:InfoBadge Classes="Critical"
+                                      Value="{Binding ErrorCount}"
+                                      IsVisible="{Binding ErrorCount, Converter={StaticResource IsGreaterThanZero}}"/>
+                    </ui:NavigationViewItem.InfoBadge>
+                    <!-- TODO: Icons -->
+                </ui:NavigationViewItem>
             </DataTemplate>
             </ui:NavigationView.MenuItemTemplate>
         </ui:NavigationView>

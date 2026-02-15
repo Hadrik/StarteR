@@ -15,7 +15,7 @@ public class MainWindow : MainWindowViewModel
                     Steps = [
                         new ProcessStepModel
                         {
-                            
+                            ErrorMessage = "Test error message",
                         }
                     ]
                 },
