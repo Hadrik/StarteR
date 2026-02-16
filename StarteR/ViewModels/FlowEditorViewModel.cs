@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using FluentAvalonia.UI.Controls;
 using StarteR.Models;
 using StarteR.Models.Steps;
 using StarteR.Services;
@@ -53,6 +54,12 @@ public partial class FlowEditorViewModel : ViewModelBase
     private void RemoveThisFlow()
     {
         _removeFlowAction(Model);
+    }
+    
+    [RelayCommand]
+    private void SetIcon(Symbol? icon)
+    {
+        Model.Icon = icon;
     }
 
     private static StepModelBase CreateStep(StepType type) => type switch

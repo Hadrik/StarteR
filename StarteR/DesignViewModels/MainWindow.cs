@@ -1,4 +1,5 @@
-﻿using StarteR.Models;
+﻿using FluentAvalonia.UI.Controls;
+using StarteR.Models;
 using StarteR.Models.Steps;
 using StarteR.ViewModels;
 
@@ -21,6 +22,7 @@ public class MainWindow : MainWindowViewModel
                 },
                 new FlowModel
                 {
+                    Icon = Symbol.ImageCopy,
                     Name = "Sample Flow 2",
                 }
             ]

@@ -1,4 +1,5 @@
-﻿using StarteR.Models;
+﻿using FluentAvalonia.UI.Controls;
+using StarteR.Models;
 using StarteR.Models.Steps;
 using StarteR.ViewModels;
 
@@ -10,6 +11,7 @@ public class FlowEditor : FlowEditorViewModel
         new FlowModel
         {
             Name = "Sample Flow 1",
+            Icon = Symbol.Accept,
             Steps = [
                 new ProcessStepModel
                 {

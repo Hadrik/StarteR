@@ -15,7 +15,8 @@
         Background="Transparent"
         TransparencyLevelHint="Mica"
         Width="800" Height="450"
-        MinWidth="800" MinHeight="450">
+        MinWidth="800" MinHeight="450"
+        Focusable="True">
     
     <Design.DataContext>
         <dvm:MainWindow/>
@@ -64,7 +65,9 @@
                                       Value="{Binding ErrorCount}"
                                       IsVisible="{Binding ErrorCount, Converter={StaticResource IsGreaterThanZero}}"/>
                     </ui:NavigationViewItem.InfoBadge>
-                    <!-- TODO: Icons -->
+                    <ui:NavigationViewItem.IconSource>
+                        <ui:SymbolIconSource Symbol="{Binding Icon}"/>
+                    </ui:NavigationViewItem.IconSource>
                 </ui:NavigationViewItem>
             </DataTemplate>
             </ui:NavigationView.MenuItemTemplate>

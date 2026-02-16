@@ -3,6 +3,7 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
+using FluentAvalonia.UI.Controls;
 using StarteR.Models.Steps;
 
 namespace StarteR.Models;
@@ -14,6 +15,9 @@ public partial class FlowModel : ObservableObject
     
     [ObservableProperty]
     private bool _isEnabled = true;
+    
+    [ObservableProperty]
+    private Symbol? _icon;
 
     public int ErrorCount => Steps.Count(s => !string.IsNullOrEmpty(s.ErrorMessage));
     
