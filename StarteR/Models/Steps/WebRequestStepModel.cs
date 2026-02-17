@@ -3,17 +3,15 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Net.Http;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
+using StarteR.StepManagement;
 
 namespace StarteR.Models.Steps;
 
+[RegisterStep("web-request", "Web Request")]
 public partial class WebRequestStepModel : StepModelBase
 {
-    [JsonIgnore] public override StepType Type => StepType.WebRequest;
-    [JsonIgnore] public override string DisplayName => "Web Request";
-    
     [ObservableProperty]
     private string _url = string.Empty;
     

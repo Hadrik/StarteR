@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -8,6 +7,7 @@ using FluentAvalonia.UI.Controls;
 using StarteR.Models;
 using StarteR.Models.Steps;
 using StarteR.Services;
+using StarteR.StepManagement;
 
 namespace StarteR.ViewModels;
 
@@ -22,7 +22,7 @@ public partial class FlowEditorViewModel : ViewModelBase
     [ObservableProperty]
     private StepModelBase? _selectedStep;
     
-    public static IReadOnlyList<StepType> AvailableStepTypes { get; } = Enum.GetValues<StepType>();
+    public static IReadOnlyCollection<StepInfo> AvailableStepTypes { get; } = StepRegistry.AllSteps;
 
     public FlowEditorViewModel(FlowModel flow, FlowRunnerService flowRunner, Action<FlowModel> removeFlowAction)
     {
@@ -32,9 +32,9 @@ public partial class FlowEditorViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    private void AddStep(StepType type)
+    private void AddStep(StepInfo stepInfo)
     {
-        var step = CreateStep(type);
+        var step = StepRegistry.Create(stepInfo);
         Model.Steps.Add(step);
     }
 
@@ -61,11 +61,4 @@ public partial class FlowEditorViewModel : ViewModelBase
     {
         Model.Icon = icon;
     }
-
-    private static StepModelBase CreateStep(StepType type) => type switch
-    {
-        StepType.Process => new ProcessStepModel(),
-        StepType.WebRequest => new WebRequestStepModel(),
-        _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
-    };
 }

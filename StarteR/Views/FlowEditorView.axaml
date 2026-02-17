@@ -5,7 +5,7 @@
              xmlns:vm="using:StarteR.ViewModels"
              xmlns:dvm="using:StarteR.DesignViewModels"
              xmlns:ui="using:FluentAvalonia.UI.Controls"
-             xmlns:steps="clr-namespace:StarteR.Models.Steps"
+             xmlns:sm="clr-namespace:StarteR.StepManagement"
              xmlns:conv="clr-namespace:StarteR.Converters"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="StarteR.Views.FlowEditorView"
@@ -209,15 +209,15 @@
                         HorizontalAlignment="Center"
                         Margin="8">
                     <Button.Flyout>
-                    <MenuFlyout> <!-- TODO: Template -->
-                        <MenuItem Header="Process"
-                                  Command="{Binding AddStepCommand}"
-                                  CommandParameter="{x:Static steps:StepType.Process}"/>
-                        
-                        <MenuItem Header="Web request"
-                                  Command="{Binding AddStepCommand}"
-                                  CommandParameter="{x:Static steps:StepType.WebRequest}"/>
-                    </MenuFlyout>
+                        <ui:FAMenuFlyout ItemsSource="{Binding AvailableStepTypes}">
+                            <ui:FAMenuFlyout.ItemTemplate>
+                                <DataTemplate x:DataType="{x:Type sm:StepInfo}">
+                                    <ui:MenuFlyoutItem Text="{Binding DisplayName}"
+                                                       Command="{Binding $parent[UserControl].((vm:FlowEditorViewModel)DataContext).AddStepCommand}"
+                                                       CommandParameter="{Binding}"/>
+                                </DataTemplate>
+                            </ui:FAMenuFlyout.ItemTemplate>
+                        </ui:FAMenuFlyout>
                     </Button.Flyout>
                 </Button>
             </StackPanel>

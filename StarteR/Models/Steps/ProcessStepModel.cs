@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
+using StarteR.StepManagement;
 
 namespace StarteR.Models.Steps;
 
+[RegisterStep("process", "Run Process")]
 public partial class ProcessStepModel : StepModelBase
 {
-    [JsonIgnore] public override StepType Type => StepType.Process;
-    [JsonIgnore] public override string DisplayName => "Process";
-    
     [ObservableProperty]
     private string _filePath = string.Empty;
     

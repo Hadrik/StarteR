@@ -1,19 +1,25 @@
 ﻿using System.IO;
 using System.Text.Json;
 using StarteR.Models;
+using StarteR.StepManagement;
 
 namespace StarteR;
 
 public class ConfigManager
 {
+    private static readonly JsonSerializerOptions JsonOptions = new()
+    {
+        Converters = { new StepModelConverter() }
+    };
+
     public static string Serialize(AppModel appModel)
     {
-        return JsonSerializer.Serialize(appModel);
+        return JsonSerializer.Serialize(appModel, JsonOptions);
     }
 
     public static AppModel? Deserialize(string json)
     {
-        return JsonSerializer.Deserialize<AppModel>(json);
+        return JsonSerializer.Deserialize<AppModel>(json, JsonOptions);
     }
     
     public static string? Read(string path = "./config.json")
