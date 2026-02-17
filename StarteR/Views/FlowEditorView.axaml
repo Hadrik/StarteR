@@ -69,6 +69,7 @@
                             <DropDownButton.Flyout>
                                 <Flyout Placement="BottomEdgeAlignedLeft">
                                     <Flyout.FlyoutPresenterTheme>
+                                        <!-- ReSharper disable once Xaml.StaticResourceNotResolved -->
                                         <ControlTheme TargetType="FlyoutPresenter" BasedOn="{StaticResource {x:Type FlyoutPresenter}}">
                                             <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
                                             <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled"/>
@@ -133,75 +134,92 @@
                 <!-- List of steps - header: type, enabled, wait - content: UserControl from type -->
                 <ItemsControl ItemsSource="{Binding Model.Steps}">
                     <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Border CornerRadius="8"
-                                Padding="8"
-                                Margin="8 4">
-                            
-                            <Border.Background>
-                            <MultiBinding Converter="{StaticResource ToBackgroundColorConverter}">
-                                <Binding Path="IsEnabled"/>
-                                <Binding Path="IsRunning"/>
-                            </MultiBinding>
-                            </Border.Background>
-                            
-                            <Border.Transitions>
-                            <Transitions>
-                                <BrushTransition Property="Background" Duration="0:0:0.1"/>
-                            </Transitions>
-                            </Border.Transitions>
-                            
-                            <StackPanel Spacing="4">
-                                <Grid ColumnDefinitions="Auto, *, Auto, Auto, Auto">
-                                    <Button Grid.Column="0"
-                                            Classes="Transparent"
-                                            Command="{Binding ClearErrorCommand}"
-                                            IsVisible="{Binding ErrorMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
-                                            ToolTip.Tip="{Binding ErrorMessage}">
-                                        <Button.Content>
-                                            <ui:InfoBadge Grid.Column="0"
-                                                          Classes="Critical Icon"/>
-                                        </Button.Content>
-                                        <Button.Styles>
-                                            <Style Selector=":is(Button):pointerover">
-                                                <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
-                                                    <Setter Property="Background" Value="Transparent"/>
-                                                </Style>
-                                            </Style>
-                                        </Button.Styles>
-                                    </Button>
-                                    
-                                    <TextBlock Grid.Column="1"
-                                               Text="{Binding DisplayName}"
-                                               VerticalAlignment="Center"
-                                               Margin="15 0"
-                                               FontSize="16"/>
-                                    
-                                    <CheckBox Grid.Column="2"
-                                              IsChecked="{Binding IsEnabled}"
-                                              Margin="20 0"
-                                              Content="Enabled"
-                                              ToolTip.Tip="Enable step"/>
-                                    
-                                    <CheckBox Grid.Column="3"
-                                              IsChecked="{Binding WaitForCompletion}"
-                                              Content="Wait"
-                                              ToolTip.Tip="Wait for step to finish before continuing"/>
-                                    
-                                    <Button Grid.Column="4"
-                                            Command="{Binding $parent[ItemsControl].((vm:FlowEditorViewModel)DataContext).RemoveStepCommand}"
-                                            CommandParameter="{Binding}"
-                                            Classes="Transparent"
-                                            ToolTip.Tip="Remove step">
-                                        <ui:SymbolIcon Symbol="DeleteFilled"/>
-                                    </Button>
-                                </Grid>
+                        <DataTemplate>
+                            <Border CornerRadius="8"
+                                    Padding="0"
+                                    Margin="8 4"
+                                    BorderThickness="8"
+                                    BorderBrush="{StaticResource AccentButtonBackgroundPressed}"
+                                    Name="StepBorder">
                                 
-                                <ContentControl Content="{Binding}"
-                                                Margin="8 0 8 8"/>
-                            </StackPanel>
-                        </Border>
-                    </DataTemplate>
+                                <Border.Background>
+                                    <MultiBinding Converter="{StaticResource ToBackgroundColorConverter}">
+                                        <Binding Path="IsEnabled"/>
+                                        <Binding Path="IsRunning"/>
+                                    </MultiBinding>
+                                </Border.Background>
+                                
+                                <Border.Transitions>
+                                    <Transitions>
+                                        <BrushTransition Property="Background" Duration="0:0:0.1"/>
+                                        <BrushTransition Property="BorderBrush" Duration="0:0:0.1"/>
+                                    </Transitions>
+                                </Border.Transitions>
+                                
+                                <StackPanel Spacing="4">
+                                    <Grid ColumnDefinitions="Auto, Auto, *, Auto, Auto, Auto">
+                                        <Border Grid.Column="0"
+                                                Background="Transparent"
+                                                Cursor="Hand"
+                                                PointerPressed="OnDragHandlePointerPressed"
+                                                PointerMoved="OnDragHandlePointerMoved"
+                                                PointerReleased="OnDragHandlePointerReleased">
+                                            <ui:SymbolIcon Symbol="List"
+                                                           Margin="5 0"
+                                                           Opacity="0.6"/>
+                                        </Border>
+                                        
+                                        <Button Grid.Column="1"
+                                                Classes="Transparent"
+                                                Command="{Binding ClearErrorCommand}"
+                                                IsVisible="{Binding ErrorMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                                                ToolTip.Tip="{Binding ErrorMessage}">
+                                            <Button.Content>
+                                                <!-- ReSharper disable Xaml.StyleClassNotFound -->
+                                                <ui:InfoBadge Grid.Column="0"
+                                                              Classes="Critical Icon"/>
+                                                <!-- ReSharper restore Xaml.StyleClassNotFound -->
+                                            </Button.Content>
+                                            <Button.Styles>
+                                                <Style Selector=":is(Button):pointerover">
+                                                    <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
+                                                        <Setter Property="Background" Value="Transparent"/>
+                                                    </Style>
+                                                </Style>
+                                            </Button.Styles>
+                                        </Button>
+                                        
+                                        <TextBlock Grid.Column="2"
+                                                   Text="{Binding DisplayName}"
+                                                   VerticalAlignment="Center"
+                                                   Margin="15 0"
+                                                   FontSize="16"/>
+                                        
+                                        <CheckBox Grid.Column="3"
+                                                  IsChecked="{Binding IsEnabled}"
+                                                  Margin="20 0"
+                                                  Content="Enabled"
+                                                  ToolTip.Tip="Enable step"/>
+                                        
+                                        <CheckBox Grid.Column="4"
+                                                  IsChecked="{Binding WaitForCompletion}"
+                                                  Content="Wait"
+                                                  ToolTip.Tip="Wait for step to finish before continuing"/>
+                                        
+                                        <Button Grid.Column="5"
+                                                Command="{Binding $parent[ItemsControl].((vm:FlowEditorViewModel)DataContext).RemoveStepCommand}"
+                                                CommandParameter="{Binding}"
+                                                Classes="Transparent"
+                                                ToolTip.Tip="Remove step">
+                                            <ui:SymbolIcon Symbol="DeleteFilled"/>
+                                        </Button>
+                                    </Grid>
+                                    
+                                    <ContentControl Content="{Binding}"
+                                                    Margin="8 0 8 8"/>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
                 
