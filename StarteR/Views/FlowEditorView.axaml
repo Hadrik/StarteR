@@ -132,7 +132,8 @@
         <ScrollViewer Grid.Row="1">
             <StackPanel>
                 <!-- List of steps - header: type, enabled, wait - content: UserControl from type -->
-                <ItemsControl ItemsSource="{Binding Model.Steps}">
+                <ItemsControl ItemsSource="{Binding Model.Steps}"
+                              Name="StepItemsControl">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <Border CornerRadius="8"
@@ -153,6 +154,7 @@
                                     <Transitions>
                                         <BrushTransition Property="Background" Duration="0:0:0.1"/>
                                         <BrushTransition Property="BorderBrush" Duration="0:0:0.1"/>
+                                        <TransformOperationsTransition Property="RenderTransform" Duration="0:0:1"/>
                                     </Transitions>
                                 </Border.Transitions>
                                 
