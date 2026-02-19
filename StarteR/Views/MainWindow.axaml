@@ -34,6 +34,12 @@
                            IsSettingsVisible="False"
                            IsPaneToggleButtonVisible="False"
                            OpenPaneLength="200">
+            <ui:NavigationView.Resources>
+                <SolidColorBrush x:Key="NavigationViewContentBackground" Color="Transparent"/>
+                <Thickness x:Key="NavigationViewContentGridBorderThickness">2 0 0 0</Thickness>
+                <CornerRadius x:Key="NavigationViewContentGridCornerRadius">0</CornerRadius>
+            </ui:NavigationView.Resources>
+            
             <ui:NavigationView.PaneHeader>
                 <Grid>
                     <Button Command="{Binding AddFlowCommand}"

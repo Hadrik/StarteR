@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Data;
 using Avalonia.Data.Converters;
 using Avalonia.Media;
-using Avalonia.Media.Immutable;
-using Color = Avalonia.Media.Color;
 
 namespace StarteR.Converters;
 
@@ -18,14 +18,22 @@ public class StepStateToBackgroundColorConverter : IMultiValueConverter
 
         var isEnabled = values[0] as bool? ?? true;
         var isRunning = values[1] as bool? ?? false;
+        var app = Application.Current!;
 
         if (!isEnabled)
-            return new ImmutableSolidColorBrush(new Color(128, 0, 0, 0));
-        
+        {
+            app.TryGetResource("CardDisabledBrush", out var disabledBrush);
+            return disabledBrush;
+        }
+
         if (isRunning)
-            return new ImmutableSolidColorBrush(new Color(32, 0, 255, 0));
+        {
+            app.TryGetResource("CardRunningBrush", out var runningBrush);
+            return runningBrush;
+        }
         
-        return new ImmutableSolidColorBrush(new Color(50, 0, 0, 0));
+        app.TryGetResource("CardBackgroundBrush", out var defaultBrush);
+        return defaultBrush;
     }
     
     public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)

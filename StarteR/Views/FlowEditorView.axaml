@@ -136,11 +136,12 @@
                               Name="StepItemsControl">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Border CornerRadius="8"
-                                    Padding="0"
-                                    Margin="8 4"
+                            <Border CornerRadius="12"
+                                    Padding="4 6"
+                                    Margin="4 0 12 0"
                                     BorderThickness="8"
-                                    BorderBrush="{StaticResource AccentButtonBackgroundPressed}"
+                                    BorderBrush="{StaticResource CardHoverHighlightTransparentBrush}"
+                                    BackgroundSizing="InnerBorderEdge"
                                     Name="StepBorder">
                                 
                                 <Border.Background>
@@ -152,8 +153,8 @@
                                 
                                 <Border.Transitions>
                                     <Transitions>
-                                        <BrushTransition Property="Background" Duration="0:0:0.1"/>
-                                        <BrushTransition Property="BorderBrush" Duration="0:0:0.1"/>
+                                        <BrushTransition Property="Background" Duration="0:0:0.25"/>
+                                        <BrushTransition Property="BorderBrush" Duration="0:0:0.15"/>
                                         <DoubleTransition Property="Opacity" Duration="0:0:0.25" Easing="CubicEaseOut"/>
                                         <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.25" Easing="CubicEaseOut"/>
                                     </Transitions>
@@ -164,6 +165,7 @@
                                         <Border Grid.Column="0"
                                                 Background="Transparent"
                                                 Cursor="Hand"
+                                                Margin="10 0 0 0"
                                                 PointerPressed="OnDragHandlePointerPressed"
                                                 PointerMoved="OnDragHandlePointerMoved"
                                                 PointerReleased="OnDragHandlePointerReleased">

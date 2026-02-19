@@ -1,0 +1,10 @@
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!-- Cards -->
+    <SolidColorBrush x:Key="CardBackgroundBrush" Color="#25000000"/>
+    <Color x:Key="CardHighlightColor" >#14FFFFFF</Color>
+    <SolidColorBrush x:Key="CardHoverHighlightBrush" Color="{StaticResource CardHighlightColor}"/>
+    <SolidColorBrush x:Key="CardHoverHighlightTransparentBrush" Opacity="0" Color="{StaticResource CardHighlightColor}"/>
+    <SolidColorBrush x:Key="CardRunningBrush">Green</SolidColorBrush>
+    <SolidColorBrush x:Key="CardDisabledBrush">Black</SolidColorBrush>
+</ResourceDictionary>

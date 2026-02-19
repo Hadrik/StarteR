@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Linq;
-using System.Text;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
+using Avalonia.Media.Immutable;
 using Avalonia.Media.Transformation;
 using Avalonia.VisualTree;
 using FluentAvalonia.UI.Controls;
@@ -25,9 +25,10 @@ public partial class FlowEditorView : UserControl
 
     private const double DragOpacity = 0.6;
     private const double DragScale = 0.9;
+
+    private readonly IBrush _highlightBorderBrush = GetBrush("CardHoverHighlightBrush");
+    private readonly IBrush _defaultBorderBrush = GetBrush("CardHoverHighlightTransparentBrush");
     
-    private readonly SolidColorBrush _highlightBorderBrush = new(Colors.Pink);
-    private IBrush? _defaultBorderBrush;
     private StepModelBase? _draggedStep;
     private Border? _draggedBorder;
     private Border? _lastHoveredBorder;
@@ -69,7 +70,6 @@ public partial class FlowEditorView : UserControl
         if (sender is not Border dragHandle) return;
         
         var stepBorder = FindStepBorder(dragHandle);
-        _defaultBorderBrush ??= stepBorder?.BorderBrush;
         if (stepBorder?.DataContext is not StepModelBase step) return;
 
         _draggedStep = step;
@@ -94,13 +94,24 @@ public partial class FlowEditorView : UserControl
         
         var hoveredBorder = GetStepBorderAtPosition(e.GetPosition(this));
         
+        // Deselect if not hovering over any step
+        if (hoveredBorder == null && _lastHoveredBorder != null)
+        {
+            ResetBorderHighlight(_lastHoveredBorder);
+            _lastHoveredBorder = null;
+            _targetIndex = -1;
+            return;
+        }
+        
+        // Highlight hovered step
         if (hoveredBorder != null && hoveredBorder != _draggedBorder && 
             hoveredBorder.DataContext is StepModelBase hoveredStep)
         {
             if (_lastHoveredBorder != hoveredBorder)
             {
-                _lastHoveredBorder?.BorderBrush = _defaultBorderBrush;
-                hoveredBorder.BorderBrush = _highlightBorderBrush;
+                if (_lastHoveredBorder != null)
+                    ResetBorderHighlight(_lastHoveredBorder);
+                HighlightBorder(hoveredBorder);
                 _lastHoveredBorder = hoveredBorder;
             }
             
@@ -116,13 +127,14 @@ public partial class FlowEditorView : UserControl
         if (_draggedBorder != null && _draggedStep != null)
         {
             _draggedBorder.ZIndex = 0;
+            _draggedBorder.Opacity = 1.0;
             _draggedBorder.RenderTransform = null;
             _draggedBorder.IsHitTestVisible = true;
             e.Pointer.Capture(null);
             
             if (_lastHoveredBorder != null)
             {
-                _lastHoveredBorder.BorderBrush = _defaultBorderBrush;
+                ResetBorderHighlight(_lastHoveredBorder);
                 _lastHoveredBorder = null;
             }
             
@@ -183,6 +195,22 @@ public partial class FlowEditorView : UserControl
             border.Opacity = 1.0;
             border.RenderTransform = null;
         }
+    }
+
+    private void HighlightBorder(Border border)
+    {
+        border.BorderBrush = _highlightBorderBrush;
+    }
+    
+    private void ResetBorderHighlight(Border border)
+    {
+        border.BorderBrush = _defaultBorderBrush;
+    }
+
+    private static IBrush GetBrush(string key)
+    {
+        Application.Current!.TryGetResource(key, out var brush);
+        return brush as IBrush ?? new SolidColorBrush(Colors.Transparent);
     }
     
     private Border? GetStepBorderAtPosition(Point position)

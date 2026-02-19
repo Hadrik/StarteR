@@ -1,5 +1,6 @@
 ﻿<Styles xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ui="using:FluentAvalonia.UI.Controls">
     <Design.PreviewWith>
         <Border Padding="20">
             <!-- Add Controls for Previewer Here -->
@@ -15,5 +16,9 @@
     
     <Style Selector=":is(TextBlock)">
         <Setter Property="FontFamily" Value="Inter"></Setter>
+    </Style>
+    
+    <Style Selector="ui|NavigationView /template/ Border#ContentGridBorder">
+        <Setter Property="Background" Value="Transparent"/>
     </Style>
 </Styles>
