@@ -1,14 +1,18 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Layout;
 using Avalonia.Media;
 using Avalonia.Media.Immutable;
 using Avalonia.Media.Transformation;
 using Avalonia.VisualTree;
 using FluentAvalonia.UI.Controls;
+using StarteR.Helpers;
 using StarteR.Models.Steps;
 using StarteR.ViewModels;
 
@@ -39,17 +43,11 @@ public partial class FlowEditorView : UserControl
     {
         InitializeComponent();
         IconItemsRepeater.ItemsSource = _availableIcons;
-        IconScrollViewer.PointerWheelChanged += (_, e) =>
-        {
-            if (e.Delta.Y > 0)
-            {
-                IconScrollViewer.PageLeft();
-            }
-            else
-            {
-                IconScrollViewer.PageRight();
-            }
-        };
+        SmoothScrollHelper.For(StepScrollViewer, Orientation.Vertical);
+        SmoothScrollHelper.For(IconScrollViewer, Orientation.Horizontal);
+        
+        // TODO: Call OnDragHandlePointerMoved when scrolling
+        // StepScrollViewer.ScrollChanged += (sender, args) => { };
     }
 
     private void StartNameEdit(object? _, TappedEventArgs e)

@@ -33,7 +33,8 @@
                            SelectedItem="{Binding CurrentFlow}"
                            IsSettingsVisible="False"
                            IsPaneToggleButtonVisible="False"
-                           OpenPaneLength="200">
+                           OpenPaneLength="200"
+                           Name="MainNavigationView">
             <ui:NavigationView.Resources>
                 <SolidColorBrush x:Key="NavigationViewContentBackground" Color="Transparent"/>
                 <Thickness x:Key="NavigationViewContentGridBorderThickness">2 0 0 0</Thickness>

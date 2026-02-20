@@ -5,8 +5,8 @@
              xmlns:vm="using:StarteR.ViewModels"
              xmlns:dvm="using:StarteR.DesignViewModels"
              xmlns:ui="using:FluentAvalonia.UI.Controls"
-             xmlns:sm="clr-namespace:StarteR.StepManagement"
-             xmlns:conv="clr-namespace:StarteR.Converters"
+             xmlns:sm="using:StarteR.StepManagement"
+             xmlns:conv="using:StarteR.Converters"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="StarteR.Views.FlowEditorView"
              x:DataType="vm:FlowEditorViewModel"
@@ -129,7 +129,8 @@
             </Button>
         </Grid>
         
-        <ScrollViewer Grid.Row="1">
+        <ScrollViewer Grid.Row="1"
+                      Name="StepScrollViewer">
             <StackPanel>
                 <!-- List of steps - header: type, enabled, wait - content: UserControl from type -->
                 <ItemsControl ItemsSource="{Binding Model.Steps}"
