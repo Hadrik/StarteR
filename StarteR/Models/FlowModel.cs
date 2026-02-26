@@ -2,6 +2,7 @@
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
+using System.Text.Json.Serialization;
 using CommunityToolkit.Mvvm.ComponentModel;
 using FluentAvalonia.UI.Controls;
 using StarteR.Models.Steps;
@@ -19,6 +20,7 @@ public partial class FlowModel : ObservableObject
     [ObservableProperty]
     private Symbol? _icon;
 
+    [JsonIgnore]
     public int ErrorCount => Steps.Count(s => !string.IsNullOrEmpty(s.ErrorMessage));
     
     public ObservableCollection<StepModelBase> Steps

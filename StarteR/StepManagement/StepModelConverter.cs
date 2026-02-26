@@ -46,7 +46,7 @@ public class StepModelConverter : JsonConverter<StepModelBase>
         using var doc = JsonSerializer.SerializeToDocument(value, value.GetType(), innerOptions);
         foreach (var property in doc.RootElement.EnumerateObject())
         {
-            if (property.Name != TypeDiscriminatorProperty)
+            if (property.Name != TypeDiscriminatorProperty && !property.Name.EndsWith("Command"))
             {
                 property.WriteTo(writer);
             }

@@ -1,10 +1,12 @@
 using System;
 using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core.Plugins;
 using System.Linq;
 using System.Net.Http;
 using Avalonia.Markup.Xaml;
+using Avalonia.Threading;
 using Microsoft.Extensions.DependencyInjection;
 using StarteR.Models;
 using StarteR.Models.Steps;
@@ -37,10 +39,24 @@ public class App : Application
         {
             DisableAvaloniaDataAnnotationValidation();
             Shutdown = () => desktop.Shutdown();
-            desktop.MainWindow = new MainWindow
+            
+            if (desktop.Args.Contains("--run"))
             {
-                DataContext = serviceProvider.GetRequiredService<MainWindowViewModel>()
-            };
+                desktop.ShutdownMode = ShutdownMode.OnExplicitShutdown;
+                var runner = serviceProvider.GetRequiredService<HeadlessRunnerService>();
+                Dispatcher.UIThread.InvokeAsync(async () =>
+                {
+                    await runner.RunAsync();
+                    desktop.Shutdown();
+                }, DispatcherPriority.Background);
+            }
+            else
+            {
+                desktop.MainWindow = new MainWindow
+                {
+                    DataContext = serviceProvider.GetRequiredService<MainWindowViewModel>()
+                };
+            }
         }
 
         base.OnFrameworkInitializationCompleted();
@@ -58,12 +74,13 @@ public class App : Application
             BindingPlugins.DataValidators.Remove(plugin);
         }
     }
-    
+
     private void ConfigureServices(IServiceCollection services)
     {
         services.AddSingleton(LoadModel());
         services.AddSingleton<SaveService>();
         services.AddSingleton<FlowRunnerService>();
+        services.AddSingleton<HeadlessRunnerService>();
         services.AddSingleton<MainWindowViewModel>();
     }
 
@@ -71,6 +88,7 @@ public class App : Application
     {
         return ConfigManager.Load() ?? new AppModel
         {
+            LoadedFromFile = false,
             Flows = [
                 new FlowModel
                 {

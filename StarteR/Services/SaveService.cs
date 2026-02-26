@@ -2,22 +2,15 @@
 
 namespace StarteR.Services;
 
-public class SaveService
+public class SaveService(AppModel model)
 {
-    private readonly AppModel _currentModel;
-
-    public SaveService(AppModel model)
-    {
-        _currentModel = model;
-    }
-    
     public void Save()
     {
-        ConfigManager.Save(_currentModel);
+        ConfigManager.Save(model);
     }
 
     public bool HasUnsavedChanges()
     {
-        return ConfigManager.Serialize(_currentModel) != ConfigManager.Read();
+        return ConfigManager.Serialize(model) != ConfigManager.Read();
     }
 }

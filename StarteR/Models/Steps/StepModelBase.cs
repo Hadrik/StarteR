@@ -33,8 +33,9 @@ public abstract partial class StepModelBase : ObservableObject
     
     protected abstract Task ExecuteAsync();
 
-    public async Task Run()
+    public async Task<bool> Run()
     {
+        var success = true;
         IsRunning = true;
         try
         {
@@ -44,10 +45,12 @@ public abstract partial class StepModelBase : ObservableObject
         catch (Exception e)
         {
             ErrorMessage = e.Message;
+            success = false;
         }
         finally
         {
             IsRunning = false;
         }
+        return success;
     }
 }

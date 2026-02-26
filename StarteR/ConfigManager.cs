@@ -1,12 +1,15 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Text.Json;
 using StarteR.Models;
 using StarteR.StepManagement;
 
 namespace StarteR;
 
-public class ConfigManager
+public static class ConfigManager
 {
+    private static readonly string ConfigPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\StarteR\config.json";
+    
     private static readonly JsonSerializerOptions JsonOptions = new()
     {
         Converters = { new StepModelConverter() }
@@ -22,27 +25,36 @@ public class ConfigManager
         return JsonSerializer.Deserialize<AppModel>(json, JsonOptions);
     }
     
-    public static string? Read(string path = "./config.json")
+    public static string? Read()
     {
         try
         {
-            return File.ReadAllText(path);
+            return File.ReadAllText(ConfigPath);
         }
-        catch (FileNotFoundException)
+        catch (Exception)
         {
             return null;
         }
     }
     
-    public static AppModel? Load(string path = "./config.json")
+    public static AppModel? Load()
     {
-        var json = Read(path);
-        return json != null ? Deserialize(json) : null;
+        var json = Read();
+        if (json == null) return null;
+        
+        var model = Deserialize(json);
+        model?.LoadedFromFile = true;
+        return model;
     }
     
-    public static void Save(AppModel appModel, string path = "./config.json")
+    public static void Save(AppModel appModel)
     {
-        using var stream = File.Create(path);
+        if (!Path.Exists(ConfigPath))
+        {
+            Directory.CreateDirectory(Path.GetDirectoryName(ConfigPath) ?? throw new InvalidOperationException());
+        }
+        
+        using var stream = File.Create(ConfigPath);
         using var writer = new StreamWriter(stream);
         writer.Write(Serialize(appModel));
     }
