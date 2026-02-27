@@ -53,6 +53,7 @@ public partial class MainWindowViewModel : ViewModelBase
         _saveService.Save();
     }
     
+    [RelayCommand]
     private void RemoveFlow(FlowModel flow)
     {
         AppModel.Flows.Remove(flow);
