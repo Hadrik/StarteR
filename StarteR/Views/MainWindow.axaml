@@ -23,8 +23,6 @@
     </Design.DataContext>
     
     <Window.Resources>
-        <conv:FlowStateToInfoBadgeVisibilityConverter x:Key="BadgeVisibilityConverter"/>
-        <conv:ZeroAsUnsetValueConverter x:Key="ZeroAsUnset"/>
         <conv:FlowStateToEnableTextConverter x:Key="EnableTextConverter"/>
         <conv:FlowStateToEnableIconConverter x:Key="EnableIconConverter"/>
     </Window.Resources>
@@ -70,20 +68,7 @@
             <ui:NavigationView.MenuItemTemplate>
                 <DataTemplate DataType="{x:Type m:FlowModel}">
                     <ui:NavigationViewItem Content="{Binding Name}">
-                        <ui:NavigationViewItem.InfoBadge>
-                            <!-- BUG: The InfoBadge's OnPropertyChanged doesn't get any ValueProperty updates so its pseudoclasses (:dot, :value) don't change. -->
-                            <ui:InfoBadge Classes.Critical="{Binding IsEnabled}"
-                                          Classes.Informational="{Binding !IsEnabled}"
-                                          Classes.Dot="{Binding !IsEnabled}"
-                                          Value="{Binding ErrorCount, Converter={StaticResource ZeroAsUnset}}">
-                                <ui:InfoBadge.IsVisible>
-                                    <MultiBinding Converter="{StaticResource BadgeVisibilityConverter}">
-                                        <Binding Path="IsEnabled"/>
-                                        <Binding Path="ErrorCount"/>
-                                    </MultiBinding>
-                                </ui:InfoBadge.IsVisible>
-                            </ui:InfoBadge>
-                        </ui:NavigationViewItem.InfoBadge>
+                        <!-- InfoBadge has to be handled in code-behind -->
                         
                         <ui:NavigationViewItem.IconSource>
                             <ui:SymbolIconSource Symbol="{Binding Icon}"/>
