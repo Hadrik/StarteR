@@ -31,8 +31,7 @@
         <ui:NavigationView PaneDisplayMode="Left"
                            MenuItemsSource="{Binding AppModel.Flows}"
                            Content="{Binding CurrentEditor}"
-                           SelectedItem="{Binding CurrentFlow}"
-                           IsSettingsVisible="False"
+                           SelectedItem="{Binding CurrentSelection}"
                            IsPaneToggleButtonVisible="False"
                            OpenPaneLength="200"
                            Name="MainNavigationView">

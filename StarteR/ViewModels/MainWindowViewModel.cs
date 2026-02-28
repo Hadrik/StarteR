@@ -19,10 +19,10 @@ public partial class MainWindowViewModel : ViewModelBase
     private AppModel _appModel;
     
     [ObservableProperty]
-    private FlowModel? _currentFlow;
+    private object? _currentSelection;
 
     [ObservableProperty]
-    private FlowEditorViewModel? _currentEditor;
+    private ViewModelBase? _currentEditor;
 
     public MainWindowViewModel(AppModel appModel, FlowRunnerService flowRunner, SaveService saveService)
     {
@@ -31,9 +31,14 @@ public partial class MainWindowViewModel : ViewModelBase
         AppModel = appModel;
     }
 
-    partial void OnCurrentFlowChanged(FlowModel? value)
+    partial void OnCurrentSelectionChanged(object? value)
     {
-        CurrentEditor = value != null ? new FlowEditorViewModel(value, _flowRunner, RemoveFlow) : null;
+        CurrentEditor = value switch
+        {
+            FlowModel flow => new FlowEditorViewModel(flow, _flowRunner, RemoveFlow),
+            NavigationViewItem { Name: "SettingsItem" } => new SettingsViewModel(),
+            _ => null
+        };
     }
 
     [RelayCommand]
@@ -44,7 +49,7 @@ public partial class MainWindowViewModel : ViewModelBase
             Name = "New Flow",
         };
         AppModel.Flows.Add(flow);
-        CurrentFlow = AppModel.Flows.Last();
+        CurrentSelection = AppModel.Flows.Last();
     }
 
     [RelayCommand]
@@ -57,7 +62,7 @@ public partial class MainWindowViewModel : ViewModelBase
     private void RemoveFlow(FlowModel flow)
     {
         AppModel.Flows.Remove(flow);
-        CurrentFlow = AppModel.Flows.FirstOrDefault();
+        CurrentSelection = AppModel.Flows.FirstOrDefault();
     }
 
     public async Task HandleWindowClosingAsync(WindowClosingEventArgs e)
