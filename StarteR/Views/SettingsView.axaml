@@ -20,7 +20,11 @@
         <ScrollViewer Grid.Row="1"
                       Margin="8"
                       Name="ContentScrollViewer">
-            <ui:SettingsExpander Header="Test settings expander"/>
+            <ui:SettingsExpander Header="Run flows at startup">
+                <ui:SettingsExpander.Footer>
+                    <ToggleSwitch IsChecked="{Binding IsAutoStartEnabled}"/>
+                </ui:SettingsExpander.Footer>
+            </ui:SettingsExpander>
         </ScrollViewer>
     </Grid>
 </UserControl>
